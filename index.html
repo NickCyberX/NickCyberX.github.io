@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tobechukwu Nicholas — Security Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: rgba(0,212,255,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,14,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-inner { max-width: 900px; }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.35rem 0.9rem;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 580px;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn {
+    padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 500;
+  }
+
+  .btn-primary:hover { background: #33dcff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 3.5rem;
+    color: var(--text);
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.25s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+
+  .skill-category:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,212,255,0.1);
+  }
+
+  .skill-cat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .skill-tag {
+    background: rgba(0,212,255,0.07);
+    color: var(--text);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 3px;
+    border: 1px solid rgba(0,212,255,0.1);
+    letter-spacing: 0.05em;
+  }
+
+  /* CERTIFICATIONS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    transition: all 0.3s;
+  }
+
+  .cert-card:hover {
+    border-color: var(--accent3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(16,185,129,0.1);
+  }
+
+  .cert-icon {
+    width: 44px; height: 44px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .cert-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .cert-body {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* EXPERIENCE */
+  .timeline { position: relative; padding-left: 2rem; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3.5rem;
+    padding-left: 2rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.4rem; top: 0.35rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .timeline-date {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-company {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .timeline-bullets { list-style: none; }
+
+  .timeline-bullets li {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-bullets li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,212,255,0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 48px rgba(0,212,255,0.08);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+  }
+
+  .project-desc {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  .project-tool {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.25);
+    color: #a78bfa;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  /* EDUCATION */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    transition: all 0.3s;
+  }
+
+  .edu-card:hover { border-color: var(--accent2); transform: translateY(-3px); }
+
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-school {
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-date { font-size: 0.7rem; color: var(--muted); }
+
+  /* CONTACT */
+  .contact-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(0,212,255,0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  .contact-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .contact-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    transition: all 0.25s;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 4rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.08em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-inner { padding: 2.5rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">TN//</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="hero-tag">// Security Engineer & Cloud Infrastructure</span>
+    <h1>Tobechukwu<br><span>Nicholas</span></h1>
+    <p class="hero-desc">
+      Cybersecurity professional specializing in network security, SOC analysis, incident response, and cloud infrastructure. Building secure, resilient systems — one layer at a time.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">// 01 — About</p>
+  <h2 class="section-title">Who I Am</h2>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>I'm a Security Engineer and Cloud Infrastructure professional based in Abuja, Nigeria. With a foundation in engineering and a strong pivot into cybersecurity, I bring an analytical, systems-thinking approach to every challenge.</p>
+      <p>My expertise spans network security, penetration testing, SOC analysis, digital forensics, and cloud platform management across AWS, Azure, GCP, and Oracle Cloud. I'm passionate about building defenses that are as intelligent as the threats they face.</p>
+      <p>Currently pursuing a BSc in Computer Science at University of the People, and a Cybersecurity Diploma at AltSchool Africa — continuously sharpening my edge.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <span class="stat-number">6+</span>
+        <span class="stat-label">Certifications</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">7+</span>
+        <span class="stat-label">Projects</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">4</span>
+        <span class="stat-label">Cloud Platforms</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">3+</span>
+        <span class="stat-label">Years Learning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">// 02 — Technical Skills</p>
+  <h2 class="section-title">What I Work With</h2>
+  <div class="skills-grid fade-in">
+    <div class="skill-category">
+      <div class="skill-cat-title">🌐 Networking</div>
+      <div class="skill-tags">
+        <span class="skill-tag">LAN Design</span>
+        <span class="skill-tag">Routers & Switches</span>
+        <span class="skill-tag">VLANs</span>
+        <span class="skill-tag">ACLs</span>
+        <span class="skill-tag">Cisco Platforms</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">🔐 Cybersecurity Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Wireshark</span>
+        <span class="skill-tag">Nmap</span>
+        <span class="skill-tag">Snort</span>
+        <span class="skill-tag">Metasploit</span>
+        <span class="skill-tag">Burp Suite</span>
+        <span class="skill-tag">Splunk</span>
+        <span class="skill-tag">Wazuh</span>
+        <span class="skill-tag">OWASP ZAP</span>
+        <span class="skill-tag">Sophos Firewall</span>
+        <span class="skill-tag">Zeek</span>
+        <span class="skill-tag">TShark</span>
+        <span class="skill-tag">NetworkMiner</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">💻 Programming & Scripting</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Bash</span>
+        <span class="skill-tag">PowerShell</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">☁️ Cloud Platforms</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS</span>
+        <span class="skill-tag">Microsoft Azure</span>
+        <span class="skill-tag">GCP</span>
+        <span class="skill-tag">Oracle Cloud (OCI)</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">🖥️ Operating Systems</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Kali Linux</span>
+        <span class="skill-tag">Ubuntu</span>
+        <span class="skill-tag">Parrot OS</span>
+        <span class="skill-tag">Windows OS</span>
+        <span class="skill-tag">Active Directory</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">🔎 Security Domains</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Incident Response</span>
+        <span class="skill-tag">OSINT</span>
+        <span class="skill-tag">Penetration Testing</span>
+        <span class="skill-tag">Vulnerability Assessment</span>
+        <span class="skill-tag">Digital Forensics</span>
+        <span class="skill-tag">Autopsy</span>
+        <span class="skill-tag">Volatility3</span>
+        <span class="skill-tag">Redline</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <p class="section-label">// 03 — Certifications</p>
+  <h2 class="section-title">Credentials</h2>
+  <div class="certs-grid fade-in">
+    <div class="cert-card">
+      <div class="cert-icon">🛡️</div>
+      <div>
+        <div class="cert-name">CompTIA Security+</div>
+        <div class="cert-body">CompTIA</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔒</div>
+      <div>
+        <div class="cert-name">(ISC)² Certified in Cybersecurity</div>
+        <div class="cert-body">(ISC)²</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🌐</div>
+      <div>
+        <div class="cert-name">Cisco CCNA</div>
+        <div class="cert-body">Cisco Certified Network Associate</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">☁️</div>
+      <div>
+        <div class="cert-name">Oracle Cloud Infrastructure Foundations</div>
+        <div class="cert-body">Oracle — OCI Certified Associate</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">⚙️</div>
+      <div>
+        <div class="cert-name">Cisco CyberOps Associate</div>
+        <div class="cert-body">Cisco</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">📱</div>
+      <div>
+        <div class="cert-name">Android Dev & Embedded Systems</div>
+        <div class="cert-body">IEEE — Certificate of Completion</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label">// 04 — Experience</p>
+  <h2 class="section-title">Work History</h2>
+  <div class="timeline fade-in">
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Feb 2026 — Present</div>
+      <div class="timeline-role">Cloud Infrastructure Engineer</div>
+      <div class="timeline-company">Ceed Venture Studio — Remote</div>
+      <ul class="timeline-bullets">
+        <li>Designed, deployed, and maintained scalable cloud infrastructure to support application development and business operations.</li>
+        <li>Leading the testing and deployment of a predictive AI model for forensic analysis, focused on detecting deepfakes across image and video media — leveraging machine learning pipelines to enhance digital evidence integrity in investigative workflows.</li>
+        <li>Automated infrastructure provisioning and configuration using Infrastructure as Code (IaC) tools, reducing deployment overhead and improving consistency across environments.</li>
+        <li>Monitored cloud environments to ensure high availability, performance, and cost efficiency.</li>
+        <li>Implemented cloud security best practices including access control, network security, and data protection policies.</li>
+        <li>Collaborated with development teams to support CI/CD pipelines and reliable application deployments.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">May 2025 — June 2025</div>
+      <div class="timeline-role">Cybersecurity Intern</div>
+      <div class="timeline-company">Future Interns — Remote</div>
+      <ul class="timeline-bullets">
+        <li>Conducted security testing on a sample web application to identify vulnerabilities including SQL injection, XSS, and authentication flaws.</li>
+        <li>Simulated phishing awareness campaigns using Gophish and SET.</li>
+        <li>Conducted Wi-Fi security assessments, identifying weak passwords, open ports, and unauthorized devices.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Nov 2023 — Oct 2024</div>
+      <div class="timeline-role">Engineering Graduate Intern</div>
+      <div class="timeline-company">Nigerian Upstream Petroleum Regulatory Commission</div>
+      <ul class="timeline-bullets">
+        <li>Reviewed Environmental Impact Assessment and related environmental study reports.</li>
+        <li>Participated in project review workshops with IOCs, focusing on environmental and safety impacts of exploration activities.</li>
+        <li>Analyzed and presented field data findings, and provided IT/network assistance to office teams.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">// 05 — Projects</p>
+  <h2 class="section-title">What I've Built</h2>
+  <div class="projects-grid fade-in">
+
+    <div class="project-card">
+      <div class="project-title">LAN Security Implementation</div>
+      <div class="project-desc">Built and secured a LAN with routers, switches, and end devices, implementing VLANs and security policies in a simulated enterprise environment.</div>
+      <div class="project-tools">
+        <span class="project-tool">Cisco Packet Tracer</span>
+        <span class="project-tool">Cisco Modelling Labs</span>
+        <span class="project-tool">VLANs</span>
+        <span class="project-tool">ACLs</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">Web Application Penetration Test</div>
+      <div class="project-desc">Exploited vulnerabilities to obtain WordPress credentials on the Mr Robot VM, monitored traffic, and documented findings in a controlled lab setup.</div>
+      <div class="project-tools">
+        <span class="project-tool">Vulnhub</span>
+        <span class="project-tool">Nmap</span>
+        <span class="project-tool">WPScan</span>
+        <span class="project-tool">Wireshark</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">OSINT Investigation</div>
+      <div class="project-desc">Extracted geolocation and identity data from a single image file as part of a CTF-style challenge using open-source intelligence frameworks.</div>
+      <div class="project-tools">
+        <span class="project-tool">OSINT Framework</span>
+        <span class="project-tool">Image Forensics</span>
+        <span class="project-tool">CTF</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">Network Traffic Analysis</div>
+      <div class="project-desc">Analyzed PCAP files to detect malicious traffic patterns across multiple tools, generating actionable threat reports.</div>
+      <div class="project-tools">
+        <span class="project-tool">Wireshark</span>
+        <span class="project-tool">TShark</span>
+        <span class="project-tool">Zeek</span>
+        <span class="project-tool">Brim</span>
+        <span class="project-tool">NetworkMiner</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">Secure HTTPS Server Setup</div>
+      <div class="project-desc">Created a self-signed certificate, configured an HTTPS Python server, and enabled encrypted local communications from scratch.</div>
+      <div class="project-tools">
+        <span class="project-tool">Python</span>
+        <span class="project-tool">OpenSSL</span>
+        <span class="project-tool">HTTPS</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">System Hacking Capstone — Full Kill Chain</div>
+      <div class="project-desc">Led a team to compromise a Windows 10 target, demonstrating the full attack lifecycle: Reconnaissance, Initial Access, Privilege Escalation, and Persistence.</div>
+      <div class="project-tools">
+        <span class="project-tool">Kali Linux</span>
+        <span class="project-tool">Windows 10 VM</span>
+        <span class="project-tool">Metasploit</span>
+        <span class="project-tool">Kill Chain</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-title">ATM Simulation Script</div>
+      <div class="project-desc">Developed a functional ATM transaction simulation in PowerShell with balance checks, withdrawal limits, and transaction logging.</div>
+      <div class="project-tools">
+        <span class="project-tool">PowerShell ISE</span>
+        <span class="project-tool">Scripting</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <p class="section-label">// 06 — Education</p>
+  <h2 class="section-title">Academic Background</h2>
+  <div class="edu-grid fade-in">
+    <div class="edu-card">
+      <div class="edu-degree">B.Eng — Agricultural & Bioresources Engineering</div>
+      <div class="edu-school">Federal University of Technology, Owerri</div>
+      <div class="edu-date">Jan 2017 — July 2023</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">BSc — Computer Science</div>
+      <div class="edu-school">University of the People</div>
+      <div class="edu-date">Sept 2025 — Present</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">Diploma — Cybersecurity</div>
+      <div class="edu-school">AltSchool Africa (Online Program)</div>
+      <div class="edu-date">June 2025 — Present</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">// 07 — Contact</p>
+  <div class="contact-inner fade-in">
+    <h2 class="contact-title">Let's Connect</h2>
+    <p class="contact-sub">Open to roles in cybersecurity, cloud infrastructure, and network engineering.<br>Feel free to reach out.</p>
+    <div class="contact-links">
+      <a href="mailto:princenicholas86@gmail.com" class="contact-link">
+        ✉ princenicholas86@gmail.com
+      </a>
+      <a href="tel:+2347031524966" class="contact-link">
+        📞 +234 703 152 4966
+      </a>
+      <a href="https://www.linkedin.com/in/tobechukwu-nicholas-460975245" target="_blank" class="contact-link">
+        🔗 LinkedIn Profile
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Tobechukwu Nicholas — Built with purpose. Secured by design.</p>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
